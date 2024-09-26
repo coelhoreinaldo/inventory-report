@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Dict, Type
 
 from inventory_report.product import Product
+import json
 
 
 class Importer(ABC):
@@ -13,8 +14,10 @@ class Importer(ABC):
         raise NotImplementedError("Method not implemented")
 
 
-class JsonImporter:
-    pass
+class JsonImporter(Importer):
+    def import_data(self) -> list[Product]:
+        with open(self.path, "r") as file:
+            return [Product(**product) for product in json.loads(file.read())]
 
 
 class CsvImporter:
@@ -27,3 +30,6 @@ IMPORTERS: Dict[str, Type[Importer]] = {
     "json": JsonImporter,
     "csv": CsvImporter,
 }
+if __name__ == "__main__":
+    json_importer = JsonImporter("tests/mocks/inventory.json")
+    print(json_importer.import_data())
