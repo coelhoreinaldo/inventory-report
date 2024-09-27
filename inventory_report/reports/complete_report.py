@@ -20,5 +20,5 @@ class CompleteReport(SimpleReport):
         return (
             simple_report
             + "\nStocked products by company:\n"
-            + "\n".join(stocked_products_by_company)
+            + "".join(stocked_products_by_company)
         )
